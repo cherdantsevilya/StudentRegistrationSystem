@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-subjects
+      author: Ilya
+      changes:
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Теория информации"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Моделирование процессов и систем защиты"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Безопасность ОС"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Теория БД"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Сети и системы передачи информации"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Основы инженерной химии"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Экономика"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Моделировние биологических процессов и систем"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Технические методы диагностических исследований и лечебных воздействий"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Безопасность систем БД"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Алгоритмы и структуры данных"
+        - insert:
+            tableName: subject
+            columns:
+              - column:
+                  name: name
+                  value: "Дискретная математика"
+
+

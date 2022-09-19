@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-groups
+      author: Ilya
+      changes:
+        - insert:
+            tableName: _group
+            columns:
+              - column:
+                  name: name
+                  value: "БАСО-02-20"
+        - insert:
+            tableName: _group
+            columns:
+              - column:
+                  name: name
+                  value: "БИСО-02-20"
+        - insert:
+            tableName: _group
+            columns:
+              - column:
+                  name: name
+                  value: "БББО-02-20"
+        - insert:
+            tableName: _group
+            columns:
+              - column:
+                  name: name
+                  value: "КББО-02-20"
+        - insert:
+            tableName: _group
+            columns:
+              - column:
+                  name: name
+                  value: "XББО-02-20"
+

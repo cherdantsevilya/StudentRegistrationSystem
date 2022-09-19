@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-student-subject
+      author: Ilya
+      changes:
+        - createTable:
+            tableName: student_subject
+            columns:
+              - column:
+                  name: student_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: subject_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: add-student-id
+      author: Ilya
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: student_id
+            baseTableName: student_subject
+            constraintName: fk1
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: student
+  - changeSet:
+      id: add-subject-id
+      author: Ilya
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: subject_id
+            baseTableName: student_subject
+            constraintName: fk2
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: subject
