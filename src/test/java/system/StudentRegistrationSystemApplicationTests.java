@@ -1,7 +1,7 @@
 package system;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -21,6 +21,7 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudentRegistrationSystemApplicationTests {
     @Autowired
     private StudentService studentService;
@@ -40,24 +41,29 @@ class StudentRegistrationSystemApplicationTests {
     }
 
     @Test
+    @Order(1)
     void findAllStudents() {
         List<Student> list = studentService.findAllStudents();
         Assertions.assertEquals(list.size(),20);
     }
 
+
     @Test
+    @Order(2)
     void findAllSubjects() {
         List<Subject> list = subjectService.findAllSubjects();
         Assertions.assertEquals(list.size(),12);
     }
 
     @Test
+    @Order(3)
     void findAllGroups() {
         List<Group> list = groupService.findAllGroups();
         Assertions.assertEquals(list.size(),5);
     }
 
     @Test
+    @Order(4)
     void findAllStudentByGroup1() {
         studentService.updateStudentGroup(1L, 1L);
         List<Student> list = studentService.findStudentsByGroup(1L);
@@ -65,6 +71,7 @@ class StudentRegistrationSystemApplicationTests {
     }
 
     @Test
+    @Order(5)
     void findAllStudentByGroup2() {
         studentService.updateStudentGroup(3L, 2L);
         studentService.updateStudentGroup(4L, 2L);
@@ -74,16 +81,18 @@ class StudentRegistrationSystemApplicationTests {
     }
 
     @Test
+    @Order(6)
     void saveStudentAndSetGroup1() {
         Student student = new Student(null, "Марк", "Петренко", 20, null, null);
-        Assertions.assertThrows(GroupNotFoundException.class, () -> studentService.saveStudentAndSetGroup(student, 100L));
+        studentService.saveStudentAndSetGroup(student, 3L);
+        List<Student> list = studentService.findStudentsByGroup(3L);
+        Assertions.assertEquals(list.size(),1);
     }
 
     @Test
+    @Order(7)
     void saveStudentAndSetGroup2() {
-        Student student = new Student(30L, "Марк", "Петренко", 20, null, null);
-        studentService.saveStudentAndSetGroup(student, 3L);
-        List<Student> list = studentService.findStudentsByGroup(3L);
-        Assertions.assertNotEquals(list.size(),1);
+        Student student = new Student(null, "Марк", "Петренко", 20, null, null);
+        Assertions.assertThrows(GroupNotFoundException.class, () -> studentService.saveStudentAndSetGroup(student, 100L));
     }
 }
