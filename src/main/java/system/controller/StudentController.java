@@ -1,30 +1,28 @@
 package system.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import system.entity.Group;
 import system.entity.Student;
-import system.entity.Subject;
-import system.service.GroupService;
 import system.service.StudentService;
-import system.service.SubjectService;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api")
 public class StudentController {
     private final StudentService studentService;
 
-    private final GroupService groupService;
-
-    private final SubjectService subjectService;
-
     @Autowired
-    public StudentController(StudentService studentService, GroupService groupService, SubjectService subjectService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
-        this.groupService = groupService;
-        this.subjectService = subjectService;
+    }
+
+    @GetMapping(value = "/student/{studentId}")
+    public Student getStudent(@PathVariable Long studentId) {
+        return studentService.findById(studentId);
     }
 
     @GetMapping(value = "/student/search")
@@ -64,13 +62,20 @@ public class StudentController {
 
     @GetMapping(value = "/student/groupId/{groupId}")
     public List<Student> getStudentsByGroupId(@PathVariable Long groupId) {
-        Group group = groupService.findById(groupId);
-        return studentService.findStudentsByGroup(group);
+        return studentService.findStudentsByGroup(groupId);
     }
 
     @PostMapping(value = "/student/new")
-    public Student createStudent(@RequestBody Student student) {
+    public Student createStudent(@Valid @RequestBody Student student) {
         return studentService.saveStudent(student);
+    }
+
+    @PostMapping(value = "/student/new/group/{groupId}")
+    public Student createStudentWithGroup(
+            @PathVariable Long groupId,
+            @Valid @RequestBody Student student
+    ) {
+        return studentService.saveStudentAndSetGroup(student, groupId);
     }
 
     @PutMapping(value = "/student/{studentId}/group/{groupId}")
@@ -78,10 +83,7 @@ public class StudentController {
             @PathVariable Long studentId,
             @PathVariable Long groupId
     ) {
-        Student student = studentService.findById(studentId);
-        Group group = groupService.findById(groupId);
-        student.setGroup(group);
-        return studentService.saveStudent(student);
+        return studentService.updateStudentGroup(studentId, groupId);
     }
 
     @PutMapping(value = "/student/{studentId}/subject/{subjectId}")
@@ -89,19 +91,6 @@ public class StudentController {
             @PathVariable Long studentId,
             @PathVariable Long subjectId
     ) {
-        Student student = studentService.findById(studentId);
-        Subject subject = subjectService.findById(subjectId);
-        student.addToSubjects(subject);
-        return studentService.saveStudent(student);
-    }
-
-    @PostMapping(value = "/student/new/group/{groupId}")
-    public Student createStudentWithGroup(
-            @PathVariable Long groupId,
-            @RequestBody Student student
-    ) {
-        Group group = groupService.findById(groupId);
-        student.setGroup(group);
-        return studentService.saveStudent(student);
+        return studentService.updateStudentSubject(studentId, subjectId);
     }
 }
